@@ -28,7 +28,7 @@ Run the Apache serve and the MYSQL Modules in xampp server control panel.
 
 Open the Web Browser and proceed to http://localhost/ABCLabAppointment/patient_portal/ to access the system. 
 
-Credentials are saved on a sperate file Name cc
+Credentials are saved on a sperate file. Name Login Details.TXT
 
 
 
