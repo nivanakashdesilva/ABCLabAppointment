@@ -1,0 +1,30 @@
+Doctor 1
+username : Priyantha
+password : Priyantha
+
+Doctor 2
+username : Shani
+password : Shani
+
+Doctor 3
+username : Terry
+password : Terry
+Admin
+username : admin
+password : admin
+
+receptionist
+username : Jane
+password : Jane
+
+technician
+username : John
+password : John
+
+Patient 1
+username : Manoj
+password : Manoj
+
+Patient 2 
+username : Shan
+password : Shan

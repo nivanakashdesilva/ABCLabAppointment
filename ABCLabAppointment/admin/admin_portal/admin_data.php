@@ -32,6 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Admin Registration</title>
 </head>
 <body>
+<?php include('main_admin/nav.php'); ?>
     <h2>Admin Registration</h2>
     <?php if(isset($error)) { ?>
         <div><?php echo $error; ?></div>

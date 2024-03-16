@@ -2,25 +2,9 @@
 session_start();
 include('../../functional/db.php');
 
-// Check if the technician is logged in
+// Check if the user is authenticated
 if (!isset($_SESSION['technician_username'])) {
-    header('Location: ../lablogin.php'); // Redirect to technician login page
-    exit();
-}
-
-// Fetch technician's access level from labaccount table
-$technician_username = $_SESSION['technician_username'];
-$query = "SELECT access_level FROM labaccount WHERE username = ?";
-$stmt = mysqli_prepare($connection, $query);
-mysqli_stmt_bind_param($stmt, "s", $technician_username);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $access_level);
-mysqli_stmt_fetch($stmt);
-mysqli_stmt_close($stmt);
-
-// Check if the technician has appropriate access level
-if ($access_level != 'doctors') {
-    header('Location: ../lablogin.php'); // Redirect to unauthorized access page
+    header('Location: index.php'); // Redirect to the login page
     exit();
 }
 
@@ -46,11 +30,17 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 mysqli_stmt_close($stmt);
 
-// Close Appointment
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['close_btn'])) {
-    $appointment_id = $_POST['appointment_id'];
-    // Update the appointment status to closed
-    $query = "UPDATE confirmed_appointments SET status = 'closed' WHERE confirmed_appointment_id = ?";
+// Close or Cancel Appointment
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['close_btn'])) {
+        $appointment_id = $_POST['appointment_id'];
+        // Update the appointment status to closed
+        $query = "UPDATE confirmed_appointments SET status = 'closed' WHERE confirmed_appointment_id = ?";
+    } elseif (isset($_POST['cancel_btn'])) {
+        $appointment_id = $_POST['appointment_id'];
+        // Update the appointment status to cancelled
+        $query = "UPDATE confirmed_appointments SET status = 'canceled' WHERE confirmed_appointment_id = ?";
+    }
     $stmt = mysqli_prepare($connection, $query);
     mysqli_stmt_bind_param($stmt, "i", $appointment_id);
     mysqli_stmt_execute($stmt);
@@ -60,58 +50,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['close_btn'])) {
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor View Appointments</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h2>Doctor View Appointments</h2>
-    <?php if (!empty($appointments)) : ?>
-    <table>
-        <tr>
-            <th>Appointment ID</th>
-            <th>Patient Name</th>
-            <th>Appointment Date</th>
-            <th>Appointment Time</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        <?php foreach ($appointments as $appointment) : ?>
-        <tr>
-            <td><?php echo $appointment['confirmed_appointment_id']; ?></td>
-            <td><a href="view_report.php?appointment_id=<?php echo $appointment['confirmed_appointment_id']; ?>"><?php echo $appointment['patient_name']; ?></a></td>
-            <td><?php echo $appointment['appointment_date']; ?></td>
-            <td><?php echo $appointment['appointment_time']; ?></td>
-            <td><?php echo $appointment['status']; ?></td>
-            <td>
-                <form method="post">
-                    <input type="hidden" name="appointment_id" value="<?php echo $appointment['confirmed_appointment_id']; ?>">
-                    <button type="submit" name="close_btn">Close</button>
-                </form>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
-    <?php else : ?>
-    <p>No upcoming appointments.</p>
-    <?php endif; ?>
+    <?php include('main/nav.php'); ?>
+
+    <div class="container mt-5">
+        <h2>Doctor View Appointments</h2>
+        <?php if (!empty($appointments)) : ?>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Appointment ID</th>
+                    <th>Patient Name</th>
+                    <th>Appointment Date</th>
+                    <th>Appointment Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($appointments as $appointment) : ?>
+                <tr>
+                    <td><?php echo $appointment['confirmed_appointment_id']; ?></td>
+                    <td><a href="view_report.php?appointment_id=<?php echo $appointment['confirmed_appointment_id']; ?>"><?php echo $appointment['patient_name']; ?></a></td>
+                    <td><?php echo $appointment['appointment_date']; ?></td>
+                    <td><?php echo $appointment['appointment_time']; ?></td>
+                    <td><?php echo $appointment['status']; ?></td>
+                    <td>
+                        <form method="post">
+                            <input type="hidden" name="appointment_id" value="<?php echo $appointment['confirmed_appointment_id']; ?>">
+                            <button type="submit" name="close_btn" class="btn btn-primary">Close</button>
+                            <button type="submit" name="cancel_btn" class="btn btn-danger">Cancel</button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php else : ?>
+        <p>No upcoming appointments.</p>
+        <?php endif; ?>
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

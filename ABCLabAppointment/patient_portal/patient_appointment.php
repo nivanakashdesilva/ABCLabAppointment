@@ -43,28 +43,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Request Appointment</title>
-</head>
-<body>
-    <h2>Welcome, <?php echo $username; ?>!</h2>
-    <h3>Request Appointment</h3>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <div>
-            <label>Appointment Date:</label>
-            <input type="date" name="appointment_date" required>
-        </div>
-        <div>
-            <label>Appointment Time:</label>
-            <input type="time" name="appointment_time" required>
-        </div>
-        <div>
-            <label>Reason for Appointment:</label>
-            <textarea name="reason" required></textarea>
-        </div>
-        <button type="submit" name="request_btn">Request Appointment</button>
-    </form>
-</body>
-</html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Appointment</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <?php
+        // Include the navigation bar page
+        include('main/nav.php');
+        ?>
+        <div class="mt-5">
+            <h2 class="text-center">Request Appointment</h2>
+            <h3 class="text-center">Welcome,
+                <?php echo $username; ?>!
+            </h3>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <div class="mb-3">
+                    <label for="appointmentDate" class="form-label">Appointment Date:</label>
+                    <input type="date" class="form-control" id="appointmentDate" name="appointment_date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="appointmentTime" class="form-label">Appointment Time:</label>
+                    <input type="time" class="form-control" id="appointmentTime" name="appointment_time" required>
+                </div>
+                <div class="mb-3">
+                    <label for="reason" class="form-label">Reason for Appointment:</label>
+                    <textarea class="form-control" id="reason" name="reason" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" name="request_btn">Request Appointment</button>
+            </form>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Patient Registration</title>
-</head>
-<body>
-    <h2>Patient Registration</h2>
     <?php
     // Enable error reporting
     error_reporting(E_ALL);
@@ -118,46 +111,67 @@
     }
     ?>
     
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        <div>
-            <label>Fullname:</label>
-            <input type="text" name="fullname" value="<?php echo $fullname; ?>" required>
-            <span class="error"><?php echo $fullname_err; ?></span>
-        </div>
-        <div>
-            <label>NIC:</label>
-            <input type="text" name="nic" value="<?php echo $nic; ?>" required>
-            <span class="error"><?php echo $nic_err; ?></span>
-        </div>
-        <div>
-            <label>Username:</label>
-            <input type="text" name="username" value="<?php echo $username; ?>" required>
-            <span class="error"><?php echo $username_err; ?></span>
-        </div>
-        <div>
-            <label>Password:</label>
-            <input type="password" name="password" value="<?php echo $password; ?>" required>
-            <span class="error"><?php echo $password_err; ?></span>
-        </div>
-        <div>
-            <label>Address:</label>
-            <input type="text" name="address" value="<?php echo $address; ?>" required>
-            <span class="error"><?php echo $address_err; ?></span>
-        </div>
-        <div>
-            <label>Email Address:</label>
-            <input type="email" name="email" value="<?php echo $email; ?>" required>
-            <span class="error"><?php echo $email_err; ?></span>
-        </div>
-        <div>
-            <label>Mobile Number:</label>
-            <input type="text" name="mobile_number" value="<?php echo $mobile_number; ?>" required>
-            <span class="error"><?php echo $mobile_number_err; ?></span>
-        </div>
-        <div>
-            <input type="submit" value="Submit">
-            <input type="reset" value="Reset">
-        </div>
-    </form>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Patient Registration</h2>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <div class="mb-3">
+                <label for="fullname" class="form-label">Fullname:</label>
+                <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo $fullname; ?>" required>
+                <span class="error"><?php echo $fullname_err; ?></span>
+            </div>
+            <div class="mb-3">
+                <label for="nic" class="form-label">NIC:</label>
+                <input type="text" class="form-control" id="nic" name="nic" value="<?php echo $nic; ?>" required>
+                <span class="error"><?php echo $nic_err; ?></span>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>" required>
+                <span class="error"><?php echo $username_err; ?></span>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" value="<?php echo $password; ?>" required>
+                <span class="error"><?php echo $password_err; ?></span>
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Address:</label>
+                <input type="text" class="form-control" id="address" name="address" value="<?php echo $address; ?>" required>
+                <span class="error"><?php echo $address_err; ?></span>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address:</label>
+                <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>" required>
+                <span class="error"><?php echo $email_err; ?></span>
+            </div>
+            <div class="mb-3">
+                <label for="mobile_number" class="form-label">Mobile Number:</label>
+                <input type="text" class="form-control" id="mobile_number" name="mobile_number" value="<?php echo $mobile_number; ?>" required>
+                <span class="error"><?php echo $mobile_number_err; ?></span>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> -->
 </body>
 </html>

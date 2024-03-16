@@ -2,6 +2,8 @@
 session_start();
 include('../functional/db.php');
 
+$error_admin = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -27,50 +29,78 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['technician_username'] = $username;
                 header('Location: admin_portal/admin_index.php');
                 exit();
-            } elseif ($access_level == 'doctors') {
-                $_SESSION['technician_username'] = $username;
-                header('Location: doctor_portal/view_appointment.php');
-                exit();
             } elseif ($access_level == 'receptionist') {
                 $_SESSION['technician_username'] = $username;
-                header('Location: receptionist_portal/receptionist_confirm_appointments.php');
+                header('Location: receptionist_portal/main.php');
                 exit();
             } elseif ($access_level == 'technician') {
-                $_SESSION['technician_username'] = $username;                                                                                           
-                header('Location: technician_portal/technician_lab_report.php');
+                $_SESSION['technician_username'] = $username;
+                header('Location: technician_portal/tech.php');
                 exit();
             }
         } else {
-            $error = "Invalid username or password";
+            $error_admin = "Invalid username or password";
         }
     } else {
-        $error = "Invalid username or password";
+        $error_admin = "Invalid username or password";
     }
 }
-
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Additional custom styles can be added here if needed */
+        #admin_container {
+            margin-top: 50px; /* Adjust margin as needed */
+        }
+    </style>
 </head>
 <body>
-    <h2>Admin Login</h2>
-    <?php if(isset($error)) { ?>
-        <div><?php echo $error; ?></div>
-    <?php } ?>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <div>
-            <label>Username:</label>
-            <input type="text" name="username" required>
+    <div class="container">
+        <div id="admin_container" class="col-md-6 mx-auto">
+            <h2 class="text-center">Admin Login</h2>
+            <div class="collapse" id="errorCollapse">
+                <div class="alert alert-danger" id="errorAlert"></div>
+            </div>
+            <?php if(!empty($error_admin)) { ?>
+                <script>
+                    // Function to show error message
+                    function showError(message) {
+                        document.getElementById('errorAlert').innerText = message;
+                        document.getElementById('errorCollapse').classList.add('show');
+                    }
+
+                    // Show error message if $error_admin is not empty
+                    var errorAdmin = '<?php echo $error_admin; ?>';
+                    if (errorAdmin !== '') {
+                        showError(errorAdmin);
+                    }
+                </script>
+            <?php } ?>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <div class="form-group">
+                    <label for="admin_username">Username:</label>
+                    <input type="text" id="admin_username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="admin_password">Password:</label>
+                    <input type="password" id="admin_password" name="password" class="form-control" required>
+                </div>
+                <p class="mt-3">Click here to access <a href="doctor_portal">Doctors Login Portal</a></p>
+                <button type="submit" name="login_btn" class="btn btn-primary btn-block">Login</button>
+            </form>
         </div>
-        <div>
-            <label>Password:</label>
-            <input type="password" name="password" required>
-        </div>
-        <button type="submit" name="login_btn">Login</button>
-    </form>
+    </div>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Include Bootstrap JavaScript (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
